@@ -1,0 +1,74 @@
+import styled from 'styled-components'
+
+export const Container = styled.div`
+  padding: 10rem 2rem;
+
+  height: 100vh;
+  width: 100%;
+
+  @media ${({ theme }) => theme.screens.md} {
+    display: flex;
+    align-items: center;
+  }
+`
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  text-align: center;
+
+  margin: 0 auto;
+  width: 100%;
+
+  padding-bottom: 5rem;
+
+  > div {
+    text-align: left;
+  }
+
+  > h1 {
+    display: none;
+
+    color: ${({ theme }) => theme.colors.light['100']};
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  @media ${({ theme }) => theme.screens.md} {
+    background-color: ${({ theme }) => theme.colors.dark['700']};
+    border-radius: 1rem;
+
+    max-width: 28rem;
+    padding: 4rem;
+
+    > h1 {
+      display: block;
+    }
+  }
+`
+
+export const LogoWrapper = styled.div`
+  align-self: flex-start;
+  margin: 0 auto 4.5rem;
+
+  > img {
+    height: 2.75rem;
+  }
+
+  @media ${({ theme }) => theme.screens.md} {
+    align-self: inherit;
+  }
+`
+
+export const PasswordStrengthMessage = styled.div`
+  color: ${({ theme }) => theme.colors.tomato['600']};
+
+  margin-top: 0.5rem;
+
+  &[data-is-strong='true'] {
+    color: ${({ theme }) => theme.colors.mint['500']};
+  }
+`
