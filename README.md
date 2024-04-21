@@ -35,6 +35,7 @@ Esta aplicação possui duas personas, o "admin" que pode gerenciar todos os pra
 <p align="center">
   <a href="https://jordane-food-explorer.netlify.app/">
     <img alt="Visualização da aplicação" src="./.github/preview.png" />
+    <span>https://jordane-food-explorer.netlify.app/</span>
   </a>
 </p>
 
