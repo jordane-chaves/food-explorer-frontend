@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios'
 import { ReactNode, useEffect, useState } from 'react'
 
+import { LoadingScreen } from '@/components/loading-screen'
 import { api } from '@/services/api'
 
 import { AuthContext, User } from '.'
@@ -21,6 +22,7 @@ interface DataProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<DataProps>({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const isAuthenticated = !!data.accessToken
 
@@ -41,6 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInParams) {
     try {
+      setIsLoading(true)
       const response = await api.post<
         unknown,
         AxiosResponse<{ access_token: string }>,
@@ -60,6 +63,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       } else {
         return alert('Erro ao fazer login.')
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -70,6 +75,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     async function refreshToken() {
       try {
+        setIsLoading(true)
         const response = await api.patch<{ access_token: string }>(
           '/token/refresh',
         )
@@ -83,6 +89,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         await getProfile()
       } catch {
         await signOut()
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -90,6 +98,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       refreshToken()
     }
   }, [isAuthenticated])
+
+  if (isLoading) {
+    return <LoadingScreen />
+  }
 
   return (
     <AuthContext.Provider
