@@ -50,6 +50,7 @@ export function EditDish() {
   const [newIngredient, setNewIngredient] = useState<string | undefined>()
   const [categories, setCategories] = useState<Category[]>([])
   const [newCategoryDialogOpen, setNewCategoryDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
   const params = useParams()
@@ -78,6 +79,7 @@ export function EditDish() {
     }
 
     try {
+      setIsLoading(true)
       const response = await uploadImage()
 
       await api.put<unknown, null, EditDishBody>(`/dishes/${dishId}`, {
@@ -96,6 +98,8 @@ export function EditDish() {
       } else {
         return alert('Erro ao editar o prato.')
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -107,6 +111,7 @@ export function EditDish() {
     }
 
     try {
+      setIsLoading(true)
       await api.delete(`/dishes/${dishId}`)
 
       return navigate(`/`)
@@ -116,6 +121,8 @@ export function EditDish() {
       } else {
         return alert('Erro ao apagar o prato.')
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -247,6 +254,7 @@ export function EditDish() {
                 accept="image/*"
                 hidden
                 onChange={handleSelectImage}
+                loading={isLoading}
               />
 
               <FileSelectText>
@@ -261,6 +269,7 @@ export function EditDish() {
                 placeholder="Ex.: Salada Ceasar"
                 onChange={(event) => setName(event.target.value)}
                 value={name}
+                loading={isLoading}
               />
             </Input.Root>
 
@@ -271,6 +280,7 @@ export function EditDish() {
                   icon={Plus}
                   text="Adicionar categoria"
                   onClick={() => setNewCategoryDialogOpen(true)}
+                  loading={isLoading}
                 />
               </Select.Label>
 
@@ -280,6 +290,7 @@ export function EditDish() {
                 options={categoriesSelectOptions}
                 onChange={(event) => setCategoryId(event.target.value)}
                 value={categoryId}
+                loading={isLoading}
               />
             </Select.Root>
           </InputsGroup>
@@ -291,10 +302,15 @@ export function EditDish() {
               <Ingredients.Items>
                 {ingredients.map((ingredient, index) => (
                   <Ingredients.Item key={index}>
-                    <Ingredients.ItemInput readOnly value={ingredient} />
+                    <Ingredients.ItemInput
+                      readOnly
+                      value={ingredient}
+                      loading={isLoading}
+                    />
                     <Ingredients.ItemAction
                       icon={X}
                       onClick={() => handleRemoveIngredient(ingredient)}
+                      loading={isLoading}
                     />
                   </Ingredients.Item>
                 ))}
@@ -305,11 +321,13 @@ export function EditDish() {
                     value={newIngredient}
                     onChange={(event) => setNewIngredient(event.target.value)}
                     placeholder="Adicionar"
+                    loading={isLoading}
                   />
 
                   <Ingredients.ItemAction
                     icon={Plus}
                     onClick={handleAddIngredient}
+                    loading={isLoading}
                   />
                 </Ingredients.Item>
               </Ingredients.Items>
@@ -323,6 +341,7 @@ export function EditDish() {
                 onChange={handleChangePrice}
                 value={price ?? ''}
                 step="0.01"
+                loading={isLoading}
               />
             </Input.Root>
           </InputsGroup>
@@ -333,15 +352,24 @@ export function EditDish() {
               placeholder="Fale brevemente sobre o prato, seus ingredientes e composição"
               onChange={(event) => setDescription(event.target.value)}
               value={description}
+              loading={isLoading}
             />
           </Input.Root>
 
           <Actions>
-            <Button.Root variant="secondary" onClick={deleteDish}>
+            <Button.Root
+              variant="secondary"
+              onClick={deleteDish}
+              loading={isLoading}
+            >
               <Button.Text text="Excluir prato" />
             </Button.Root>
 
-            <Button.Root type="submit" disabled={!canEditDish}>
+            <Button.Root
+              type="submit"
+              disabled={!canEditDish}
+              loading={isLoading}
+            >
               <Button.Text text="Salvar alterações" />
             </Button.Root>
           </Actions>

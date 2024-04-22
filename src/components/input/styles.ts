@@ -4,6 +4,10 @@ export const Container = styled.label`
   color: ${({ theme }) => theme.colors.light['400']};
   text-align: left;
 
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
   min-width: max-content;
   width: 100%;
 `
@@ -20,6 +24,12 @@ export const Content = styled.div`
 
   position: relative;
   z-index: 1;
+
+  &:has(input:disabled),
+  &:has(input:disabled) input,
+  &:has(textarea:disabled) textarea {
+    cursor: not-allowed;
+  }
 
   > input,
   > textarea {

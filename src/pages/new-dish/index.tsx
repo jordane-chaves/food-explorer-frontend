@@ -48,6 +48,7 @@ export function NewDish() {
   const [categories, setCategories] = useState<Category[]>([])
 
   const [newCategoryDialogOpen, setNewCategoryDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const newIngredientInput = useRef<HTMLInputElement>(null)
 
@@ -76,6 +77,7 @@ export function NewDish() {
     }
 
     try {
+      setIsLoading(true)
       const { imageId } = await uploadImage()
 
       await api.post<unknown, null, CreateDishBody>('/dishes', {
@@ -94,6 +96,8 @@ export function NewDish() {
       } else {
         return alert('Erro ao criar o prato.')
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -197,25 +201,28 @@ export function NewDish() {
           <InputsGroup>
             <Input.Root label="Imagem do prato" className="image">
               <Input.Icon icon={UploadSimple} />
-              <Input.Element
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleSelectImage}
-              />
 
               <FileSelectText>
                 {imageFile
                   ? 'Selecione imagem para alterá-la'
                   : 'Selecione imagem'}
               </FileSelectText>
+
+              <Input.Element
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleSelectImage}
+                loading={isLoading}
+              />
             </Input.Root>
 
-            <Input.Root label="Nome" className="name">
+            <Input.Root label="Nome" className="name" aria-disabled>
               <Input.Element
                 placeholder="Ex.: Salada Ceasar"
                 onChange={(event) => setName(event.target.value)}
                 value={name ?? ''}
+                loading={isLoading}
               />
             </Input.Root>
 
@@ -226,6 +233,7 @@ export function NewDish() {
                   icon={Plus}
                   text="Adicionar categoria"
                   onClick={() => setNewCategoryDialogOpen(true)}
+                  loading={isLoading}
                 />
               </Select.Label>
 
@@ -235,6 +243,7 @@ export function NewDish() {
                 options={categoriesSelectOptions}
                 onChange={(event) => setCategoryId(event.target.value)}
                 value={categoryId}
+                loading={isLoading}
               />
             </Select.Root>
           </InputsGroup>
@@ -246,10 +255,15 @@ export function NewDish() {
               <Ingredients.Items>
                 {ingredients.map((ingredient, index) => (
                   <Ingredients.Item key={index}>
-                    <Ingredients.ItemInput readOnly value={ingredient} />
+                    <Ingredients.ItemInput
+                      readOnly
+                      value={ingredient}
+                      loading={isLoading}
+                    />
                     <Ingredients.ItemAction
                       icon={X}
                       onClick={() => handleRemoveIngredient(ingredient)}
+                      loading={isLoading}
                     />
                   </Ingredients.Item>
                 ))}
@@ -261,11 +275,13 @@ export function NewDish() {
                     value={newIngredient ?? ''}
                     onChange={(event) => setNewIngredient(event.target.value)}
                     placeholder="Adicionar"
+                    loading={isLoading}
                   />
 
                   <Ingredients.ItemAction
                     icon={Plus}
                     onClick={handleAddIngredient}
+                    loading={isLoading}
                   />
                 </Ingredients.Item>
               </Ingredients.Items>
@@ -279,6 +295,7 @@ export function NewDish() {
                 onChange={handleChangePrice}
                 value={price ?? ''}
                 step="0.01"
+                loading={isLoading}
               />
             </Input.Root>
           </InputsGroup>
@@ -289,11 +306,16 @@ export function NewDish() {
               placeholder="Fale brevemente sobre o prato, seus ingredientes e composição"
               onChange={(event) => setDescription(event.target.value)}
               value={description ?? ''}
+              loading={isLoading}
             />
           </Input.Root>
 
           <Actions>
-            <Button.Root disabled={!canCreateDish} type="submit">
+            <Button.Root
+              disabled={!canCreateDish}
+              type="submit"
+              loading={isLoading}
+            >
               <Button.Text text="Salvar alterações" />
             </Button.Root>
           </Actions>

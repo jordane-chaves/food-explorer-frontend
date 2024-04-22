@@ -49,10 +49,6 @@ export const Form = styled.form`
     font-weight: 500;
     line-height: 1.4;
   }
-
-  label {
-    gap: 1rem;
-  }
 `
 
 export const InputsGroup = styled.div`
@@ -96,6 +92,10 @@ export const FileSelectText = styled.span`
   line-height: 1.5rem;
 
   cursor: pointer;
+
+  &:has(+ input:disabled) {
+    cursor: not-allowed;
+  }
 `
 
 export const Actions = styled.div`

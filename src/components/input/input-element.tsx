@@ -4,16 +4,17 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>
 
 type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>
 
-type InputElementProps =
+type InputElementProps = { loading?: boolean } & (
   | ({
       component?: 'input'
     } & InputProps)
   | ({ component: 'textarea' } & TextareaProps)
+)
 
-export function InputElement(props: InputElementProps) {
-  if (props.component === 'textarea') {
-    return <textarea {...props} />
+export function InputElement({ loading = false, ...rest }: InputElementProps) {
+  if (rest.component === 'textarea') {
+    return <textarea {...rest} disabled={loading} />
   }
 
-  return <input {...props} />
+  return <input {...rest} disabled={loading} />
 }

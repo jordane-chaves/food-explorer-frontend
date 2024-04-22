@@ -12,11 +12,13 @@ interface Option {
 interface SelectElementProps extends SelectHTMLAttributes<HTMLSelectElement> {
   emptyText?: string
   options: Option[]
+  loading?: boolean
 }
 
 export function SelectElement({
   emptyText,
   options,
+  loading = false,
   ...rest
 }: SelectElementProps) {
   const isEmpty = options.length === 0
@@ -24,7 +26,7 @@ export function SelectElement({
 
   return (
     <SelectWrapper>
-      <select disabled={isEmpty} {...rest}>
+      <select {...rest} disabled={isEmpty || loading}>
         {isEmpty ? (
           <option value="">{empty}</option>
         ) : (

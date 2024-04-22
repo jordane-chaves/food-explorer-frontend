@@ -43,6 +43,11 @@ export const Label = styled.label`
   > button:hover {
     filter: brightness(0.9);
   }
+
+  > button:disabled {
+    cursor: not-allowed;
+    filter: brightness(0.7);
+  }
 `
 
 export const SelectWrapper = styled.div`
@@ -61,6 +66,11 @@ export const SelectWrapper = styled.div`
 
   &:has(select:disabled) {
     background: ${({ theme }) => theme.colors.dark['700']};
+
+    &,
+    select {
+      cursor: not-allowed;
+    }
 
     > svg {
       fill: ${({ theme }) => theme.colors.light['700']};

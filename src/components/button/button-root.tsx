@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from 'react'
 
-import { Container } from './styles'
+import { Container, LoadingSpin } from './styles'
 
 interface ButtonRootProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean
@@ -9,13 +9,13 @@ interface ButtonRootProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function ButtonRoot({
   children,
-  loading,
   variant,
+  loading = false,
   ...rest
 }: ButtonRootProps) {
   return (
-    <Container type="button" $variant={variant} disabled={loading} {...rest}>
-      {children}
+    <Container type="button" $variant={variant} {...rest} disabled={loading}>
+      {loading ? <LoadingSpin /> : children}
     </Container>
   )
 }

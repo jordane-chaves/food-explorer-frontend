@@ -1,3 +1,4 @@
+import { CircleNotch } from '@phosphor-icons/react'
 import styled from 'styled-components'
 
 export const Container = styled.button<{ $variant?: 'primary' | 'secondary' }>`
@@ -52,5 +53,18 @@ export const IconWrapper = styled.div`
   > svg {
     height: 2rem;
     width: 2rem;
+  }
+`
+
+export const LoadingSpin = styled(CircleNotch)`
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 `

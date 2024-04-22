@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 `
 
 export const ItemsContainer = styled.div`
@@ -57,5 +57,10 @@ export const IconButton = styled.button`
   > svg {
     height: 1rem;
     width: 1rem;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 `
