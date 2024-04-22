@@ -7,8 +7,10 @@ export const Container = styled.footer`
 
 export const Content = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column-reverse;
   justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 
   max-width: 70rem;
 
@@ -17,6 +19,10 @@ export const Content = styled.div`
   > span {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.75rem;
+  }
+
+  @media ${({ theme }) => theme.screens.md} {
+    flex-direction: initial;
   }
 `
 

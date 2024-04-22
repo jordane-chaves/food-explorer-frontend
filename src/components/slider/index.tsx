@@ -14,16 +14,16 @@ interface SliderProps {
 
 export function Slider({ slides = [] }: SliderProps) {
   const swiperOptions: SwiperOptions = {
-    slidesPerView: 1.5,
+    slidesPerView: 2,
     spaceBetween: 16,
     navigation: true,
     modules: [Navigation],
     breakpoints: {
       425: {
-        slidesPerView: 2,
+        slidesPerView: 2.5,
       },
       640: {
-        slidesPerView: 3,
+        slidesPerView: 3.5,
         spaceBetween: 20,
       },
       768: {

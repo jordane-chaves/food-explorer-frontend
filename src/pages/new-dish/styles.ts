@@ -17,11 +17,18 @@ export const Content = styled.main`
     max-width: 70rem;
     margin: 0 auto;
 
-    padding: 2.5rem 0 7rem;
+    padding: 2.5rem 2rem 7rem;
+  }
+
+  @media ${({ theme }) => theme.screens.xl} {
+    padding-inline: 0;
   }
 `
 
-export const ReturnButton = styled.a`
+export const ReturnButton = styled.button`
+  border: none;
+  background: none;
+
   display: flex;
   align-items: center;
 

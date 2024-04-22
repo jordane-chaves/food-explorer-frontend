@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  padding: 10rem 2rem;
-
-  height: 100vh;
+  height: 100dvh;
   width: 100%;
+  padding: 3rem 2rem;
 
   @media ${({ theme }) => theme.screens.md} {
     display: flex;
     align-items: center;
+    padding: 10rem 2rem;
   }
 `
 

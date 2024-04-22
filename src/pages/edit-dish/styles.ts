@@ -17,7 +17,11 @@ export const Content = styled.main`
     max-width: 70rem;
     margin: 0 auto;
 
-    padding: 2.5rem 0 7rem;
+    padding: 2.5rem 2rem 7rem;
+  }
+
+  @media ${({ theme }) => theme.screens.xl} {
+    padding-inline: 0;
   }
 `
 
@@ -31,6 +35,8 @@ export const ReturnButton = styled.button`
   font-size: 1.5rem;
   font-weight: 500;
   line-height: 1.4;
+
+  max-width: max-content;
 
   > svg {
     height: 2rem;
@@ -93,10 +99,15 @@ export const FileSelectText = styled.span`
   line-height: 1.5rem;
 
   cursor: pointer;
+
+  &:has(+ input:disabled) {
+    cursor: not-allowed;
+  }
 `
 
 export const Actions = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 2rem;
 
   > button {
@@ -105,6 +116,7 @@ export const Actions = styled.div`
 
   @media ${({ theme }) => theme.screens.md} {
     justify-content: flex-end;
+    flex-direction: initial;
 
     > button {
       flex: 0;
