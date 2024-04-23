@@ -8,6 +8,7 @@ import EmptyImg from '@/assets/empty.svg'
 import { DishCard } from '@/components/dish-card'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
+import { LoadingSpinnerBounce } from '@/components/loading-spinner-bounce'
 import { Section } from '@/components/section'
 import { Slider } from '@/components/slider'
 import { useAuth } from '@/hooks/auth'
@@ -16,18 +17,20 @@ import { UserRoles } from '@/utils/user-roles.enum'
 
 import { Container, Content, EmptyDishes, Hero, HeroContent } from './styles'
 
-type CategoryWithDishesIds = Category & { dishes_ids: string[] }
-
 export function Home() {
   const [search, setSearch] = useState('')
-  const [categories, setCategories] = useState<CategoryWithDishesIds[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [dishes, setDishes] = useState<DishDetails[]>([])
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const { user } = useAuth()
 
   useEffect(() => {
+    setIsLoading(true)
+
     api
-      .get<{ categories: CategoryWithDishesIds[] }>('/categories')
+      .get<{ categories: Category[] }>('/categories')
       .then((response) => response.data)
       .then((data) => setCategories(data.categories))
       .catch((error) => {
@@ -40,6 +43,8 @@ export function Home() {
   }, [])
 
   useEffect(() => {
+    setIsLoading(true)
+
     api
       .get<{ dishes: DishDetails[] }>('/dishes', {
         params: {
@@ -52,9 +57,10 @@ export function Home() {
         if (error instanceof AxiosError && error.response) {
           return alert(error.response.data.message)
         } else {
-          return alert('Erro ao listar as categorias')
+          return alert('Erro ao listar os pratos')
         }
       })
+      .finally(() => setIsLoading(false))
   }, [search])
 
   const isEmptyDishes = dishes.length === 0
@@ -89,19 +95,25 @@ export function Home() {
 
         {isEmptyDishes ? (
           <EmptyDishes>
-            <img
-              src={EmptyImg}
-              alt="Ilustração de um prato com ovos, batata frita e mais alguns ingredientes. Do lado esquerdo do prato contém um vidro de molho e do lado direito um copo contendo um líquido com gelo e um canudo."
-            />
+            {isLoading ? (
+              <LoadingSpinnerBounce />
+            ) : (
+              <>
+                <img
+                  src={EmptyImg}
+                  alt="Ilustração de um prato com ovos, batata frita e mais alguns ingredientes. Do lado esquerdo do prato contém um vidro de molho e do lado direito um copo contendo um líquido com gelo e um canudo."
+                />
 
-            <p>Nenhum prato cadastrado</p>
+                <p>Nenhum prato cadastrado</p>
 
-            {canCreateNewDish && (
-              <div>
-                <span>
-                  Crie um <Link to="/dish/new">novo prato</Link>
-                </span>
-              </div>
+                {canCreateNewDish && (
+                  <div>
+                    <span>
+                      Crie um <Link to="/dish/new">novo prato</Link>
+                    </span>
+                  </div>
+                )}
+              </>
             )}
           </EmptyDishes>
         ) : (
