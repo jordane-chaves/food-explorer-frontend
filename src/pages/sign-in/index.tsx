@@ -57,7 +57,6 @@ export function SignIn() {
           <Input.Element
             type="password"
             placeholder="Digite sua senha"
-            minLength={6}
             onChange={(event) => setPassword(event.target.value)}
             required
           />

@@ -69,7 +69,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {
-    await api.post('/logout').finally(() => setData({}))
+    try {
+      setIsLoading(true)
+
+      await api.post('/logout')
+
+      setData({})
+    } catch (error) {
+      alert('Falha ao sair da aplicação')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
