@@ -24,7 +24,7 @@ export const ItemsContainer = styled.div`
 export const Item = styled.div<{ $isNew: boolean }>`
   background: ${({ theme, $isNew }) =>
     $isNew ? 'transparent' : theme.colors.light['600']};
-  border: ${({ theme, $isNew }) =>
+  outline: ${({ theme, $isNew }) =>
     $isNew ? `2px dashed ${theme.colors.light['500']}` : 'none'};
   border-radius: 0.5rem;
 

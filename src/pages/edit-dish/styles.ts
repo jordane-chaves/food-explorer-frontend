@@ -70,6 +70,7 @@ export const InputsGroup = styled.div`
 
   @media ${({ theme }) => theme.screens.md} {
     flex-direction: row;
+    align-items: flex-start;
     gap: 2rem;
 
     .image {
