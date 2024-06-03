@@ -3,8 +3,11 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import { LoadingScreen } from '@/components/loading-screen'
 import { api } from '@/services/api'
+import storageConfig from '@/config/storage'
 
 import { AuthContext, User } from '.'
+
+const { ACCESS_TOKEN_KEY } = storageConfig
 
 interface AuthProviderProps {
   children: ReactNode
@@ -20,24 +23,31 @@ interface DataProps {
   user?: User
 }
 
+export async function signOut() {
+  localStorage.clear()
+  await api.post('/logout')
+
+  window.location.href = '/'
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<DataProps>({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const isAuthenticated = !!data.accessToken
+  const isAuthenticated = !!data.user
 
   async function getProfile() {
     try {
+      setIsLoading(true)
+
       const response = await api.get<{ user: User }>('/profile')
       const { user } = response.data
 
       setData((prev) => ({ ...prev, user }))
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        return alert(error.response.data.message)
-      } else {
-        return alert('Erro ao fazer login.')
-      }
+      await signOut()
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -55,6 +65,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
       setData((prev) => ({ ...prev, accessToken }))
+      localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
 
       await getProfile()
     } catch (error) {
@@ -68,46 +79,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function signOut() {
-    try {
-      setIsLoading(true)
-
-      await api.post('/logout')
-
-      setData({})
-    } catch (error) {
-      alert('Falha ao sair da aplicação')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   useEffect(() => {
-    async function refreshToken() {
-      try {
-        setIsLoading(true)
-        const response = await api.patch<{ access_token: string }>(
-          '/token/refresh',
-        )
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY)
 
-        const { access_token: accessToken } = response.data
-
-        api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-
-        setData((prev) => ({ ...prev, accessToken }))
-
-        await getProfile()
-      } catch {
-        await signOut()
-      } finally {
-        setIsLoading(false)
-      }
+    if (accessToken) {
+      getProfile()
     }
-
-    if (!isAuthenticated) {
-      refreshToken()
-    }
-  }, [isAuthenticated])
+  }, [])
 
   if (isLoading) {
     return <LoadingScreen />

@@ -1,3 +1,5 @@
+const APP_STORAGE_KEY = '@food-explorer'
+
 export default {
-  APP_STORAGE_KEY: '@food-explorer',
+  ACCESS_TOKEN_KEY: APP_STORAGE_KEY.concat(':token'),
 }
