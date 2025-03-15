@@ -20,9 +20,6 @@
 <p align="center">
   <a href="https://github.com/jordane-chaves/food-explorer-frontend/blob/main/LICENSE">
     <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=49AA26&labelColor=000000">
-  </a>&nbsp;&nbsp;
-  <a href="https://app.netlify.com/sites/jordane-food-explorer/deploys">
-    <img alt="Netlify Status" src="https://api.netlify.com/api/v1/badges/af6f3afd-f68a-4f70-82a9-c7cd55adc874/deploy-status">
   </a>
 </p>
 
@@ -33,10 +30,7 @@
 Esta aplicação possui duas personas, o "admin" que pode gerenciar todos os pratos e o "cliente" que pode listar os pratos cadastrados e visualizar detalhes de algum prato e adicioná-lo em um carrinho.
 
 <p align="center">
-  <a href="https://jordane-food-explorer.netlify.app/">
-    <img alt="Visualização da aplicação" src="./.github/preview.png" />
-    <span>https://jordane-food-explorer.netlify.app/</span>
-  </a>
+  <img alt="Visualização da aplicação" src="./.github/preview.png" />
 </p>
 
 ## 🚀 Tecnologias
